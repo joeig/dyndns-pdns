@@ -1,0 +1,39 @@
+---
+server:
+  # Proxy API listener:
+  listenAddress: "127.0.0.1:8000"
+  tls:
+    enable: true
+    # TLS certificate file:
+    certFile: "server.crt"
+    # TLS key file:
+    keyFile: "server.key"
+
+powerDNS:
+  # PowerDNS API base URL:
+  baseURL: "http://127.0.0.1:8080/"
+  # PowerDNS vHost (usually "localhost"):
+  vhost: "localhost"
+  # PowerDNS API key:
+  apiKey: "secret"
+
+miscellaneous:
+  # DNS zone:
+  zone: "dyn.example.com"
+  # Default TTL for TXT records:
+  defaultTTL: 10
+
+keyTable:
+- name: "homeRouter"
+  enable: true
+  key: "secret"
+  # DNS hostname (will be concatenated to "${hostName}.${zone}"):
+  hostName: "home-router"
+  ingestMode: "getParameter"
+- name: "officeRouter"
+  enable: true
+  key: "topSecret"
+  hostName: "office-router"
+  ingestMode: "remoteAddress"
+  # Overwrite miscellaneous.defaultTTL:
+  ttl: 5

@@ -1,0 +1,15 @@
+[Unit]
+Description=Dynamic DNS Collector
+After=network.target
+
+[Service]
+Type=simple
+User=dyndns
+Group=dyndns
+WorkingDirectory=/opt/dyndns/
+ExecStart=/opt/dyndns/dyndns
+RestartSec=15
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
