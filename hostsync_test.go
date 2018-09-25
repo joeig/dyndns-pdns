@@ -25,23 +25,45 @@ func TestHostSync(t *testing.T) {
 	router := getGinEngine()
 
 	// OK
-	t.Run("TestGetParameterIPv4IPv6OK", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv4=127.0.0.1&ipv6=::1", http.StatusOK) })
-	t.Run("TestGetParameterIPv4OK", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv4=127.0.0.1", http.StatusOK) })
-	t.Run("TestGetParameterIPv6OK", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv6=::1", http.StatusOK) })
-	t.Run("TestRemoteAddressOK", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/officeRouter/sync?key=topSecret", http.StatusOK) })
+	t.Run("TestGetParameterIPv4IPv6OK", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv4=127.0.0.1&ipv6=::1", http.StatusOK)
+	})
+	t.Run("TestGetParameterIPv4OK", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv4=127.0.0.1", http.StatusOK)
+	})
+	t.Run("TestGetParameterIPv6OK", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv6=::1", http.StatusOK)
+	})
+	t.Run("TestRemoteAddressOK", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/officeRouter/sync?key=topSecret", http.StatusOK)
+	})
 
 	// Forbidden
-	t.Run("TestUnknownDeviceNameForbidden", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/unknownDevice/sync?key=secret&ipv6=::1", http.StatusForbidden) })
-	t.Run("TestInvalidKeyForbidden", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=wrongKey&ipv6=::1", http.StatusForbidden) })
+	t.Run("TestUnknownDeviceNameForbidden", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/unknownDevice/sync?key=secret&ipv6=::1", http.StatusForbidden)
+	})
+	t.Run("TestInvalidKeyForbidden", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=wrongKey&ipv6=::1", http.StatusForbidden)
+	})
 
 	// Unauthorized
-	t.Run("TestMissingDeviceNameUnauthorized", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host//sync?key=secret&ipv6=::1", http.StatusUnauthorized) })
-	t.Run("TestMissingKeyUnauthorized", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync", http.StatusUnauthorized) })
+	t.Run("TestMissingDeviceNameUnauthorized", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host//sync?key=secret&ipv6=::1", http.StatusUnauthorized)
+	})
+	t.Run("TestMissingKeyUnauthorized", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync", http.StatusUnauthorized)
+	})
 
 	// BadRequest
-	t.Run("TestGetParameterMissingBadRequest", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret", http.StatusBadRequest) })
-	t.Run("TestInvalidIPv4BadRequest", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv4=foo", http.StatusBadRequest) })
-	t.Run("TestInvalidIPv6BadRequest", func(t *testing.T) { assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv6=foo", http.StatusBadRequest) })
+	t.Run("TestGetParameterMissingBadRequest", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret", http.StatusBadRequest)
+	})
+	t.Run("TestInvalidIPv4BadRequest", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv4=foo", http.StatusBadRequest)
+	})
+	t.Run("TestInvalidIPv6BadRequest", func(t *testing.T) {
+		assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv6=foo", http.StatusBadRequest)
+	})
 
 	// Response headers
 	t.Run("TestCacheControl", func(t *testing.T) {
