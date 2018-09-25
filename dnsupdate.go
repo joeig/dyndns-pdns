@@ -16,7 +16,7 @@ func addIPv6ResourceRecord(domain string, hostname string, ipv6 string, ttl int)
 
 func addPowerDNSResourceRecord(domain string, hostname string, recordType string, content string, ttl int) error {
 	log.Printf("Calling PowerDNS (add) with domain='%s' hostname='%s' recordType='%s' content='%s' ttl=%d", domain, hostname, recordType, content, ttl)
-	if dry {
+	if Dry {
 		log.Print("Dry run is enabled: Skipping calls to PowerDNS")
 		return nil
 	}
@@ -45,7 +45,7 @@ func deleteIPv6ResourceRecord(domain string, hostname string) error {
 
 func deletePowerDNSResourceRecord(domain string, hostname string, recordType string) error {
 	log.Printf("Calling PowerDNS (delete) with domain='%s' hostname='%s' recordType='%s'", domain, hostname, recordType)
-	if dry {
+	if Dry {
 		log.Print("Dry run is enabled: Skipping calls to PowerDNS")
 		return nil
 	}
