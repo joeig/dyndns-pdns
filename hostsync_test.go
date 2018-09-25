@@ -46,8 +46,8 @@ func TestHostSync(t *testing.T) {
 	// Response headers
 	t.Run("TestCacheControl", func(t *testing.T) {
 		res := assertHostSyncComponent(t, router, "GET", "/v1/host/homeRouter/sync?key=secret&ipv4=127.0.0.1&ipv6=::1", http.StatusOK)
-		if res.HeaderMap.Get("X-Request-ID") == "" {
-			t.Errorf("X-Request-ID is missing")
+		if res.HeaderMap.Get("Cache-Control") == "" {
+			t.Errorf("Cache-Control is missing")
 		}
 	})
 	t.Run("TestRequestID", func(t *testing.T) {
