@@ -14,16 +14,13 @@ func checkKey(key string) (string, error) {
 	return key, nil
 }
 
-func checkAuthorization(keyTable []Key, name string, key string) (Key, error) {
+func checkAuthorization(keyTable []Key, name string, key string) (*Key, error) {
 	for _, keyItem := range keyTable {
-		if !keyItem.Enable {
-			continue
-		}
-		if keyItem.Name == name && keyItem.Key == key {
-			return keyItem, nil
+		if keyItem.Enable && keyItem.Name == name && keyItem.Key == key {
+			return &keyItem, nil
 		}
 	}
-	return Key{}, &Error{"Permission denied"}
+	return &Key{}, &Error{"Permission denied"}
 }
 
 func getTTL(keyItemTTL int, defaultTTL int) int {
