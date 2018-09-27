@@ -3,6 +3,25 @@
 Collects IPv4/IPv6 addresses of network devices (routers, firewalls etc.) and writes the corresponding PowerDNS resource records.
 
 [![Build Status](https://travis-ci.org/joeig/dyndns-pdns.svg?branch=master)](https://travis-ci.org/joeig/dyndns-pdns)
+[![Go Report Card](https://goreportcard.com/badge/github.com/joeig/dyndns-pdns)](https://goreportcard.com/report/github.com/joeig/dyndns-pdns)
+
+## Setup
+
+### Install from source
+
+You need `go` and `GOBIN` in your `PATH`. Once that is done, install dyndns-pdns using the following command:
+
+~~~ bash
+go get -u github.com/joeig/dyndns-pdns
+~~~
+
+After that, copy [`config.dist.yml`](config.dist.yml) to `config.yml`, replace the default settings and run the binary:
+
+~~~ bash
+dyndns-pdns -config=/path/to/config.yml
+~~~
+
+If you're intending to add the application to your systemd runlevel, you may want to take a look at [`scripts/dyndns-pdns.service`](scripts/dyndns-pdns.service).
 
 ## Usage
 
@@ -47,6 +66,17 @@ Your Fritzbox configuration might look like this:
 | Update URL | https://dyn-ingest.example.com/v1/host/\<username\>/sync?key=\<pass\>&ipv4=\<ipaddr\>&ipv6=\<ip6addr\> |
 | Domain name | fb-home.dyn.example.com |
 | Username | fb-home |
-| Password | ... |
+| Password | my secret password |
 
 You have to copy the update URL as it is, including all the placeholders and \<\> brackets. They will be substituted by FritzOS internally with the corresponding values.
+
+The key table item should be as following:
+
+~~~ yaml
+keyTable:
+- name: "fb-home"
+  enable: true
+  key: "my secret password"
+  hostName: "fb-home"
+  ingestMode: "getParameter"
+~~~

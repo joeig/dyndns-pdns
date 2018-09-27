@@ -7,7 +7,10 @@ import (
 	"net/http"
 )
 
+// Dry prohibits calling any backend services
 var Dry = false
+
+// Debug enables verbose log output
 var Debug = false
 
 func main() {

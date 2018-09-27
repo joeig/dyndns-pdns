@@ -6,8 +6,8 @@ After=network.target
 Type=simple
 User=dyndns
 Group=dyndns
-WorkingDirectory=/opt/dyndns/
-ExecStart=/opt/dyndns/dyndns
+WorkingDirectory=/opt/dyndns-pdns/
+ExecStart=dyndns-pdns -config=config.yml
 RestartSec=15
 Restart=always
 

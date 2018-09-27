@@ -3,6 +3,7 @@ server:
   # Proxy API listener:
   listenAddress: "127.0.0.1:8000"
   tls:
+    # Let dyndns-pdns terminate the TLS session:
     enable: true
     # TLS certificate file:
     certFile: "server.crt"
@@ -18,22 +19,23 @@ powerDNS:
   apiKey: "secret"
 
 miscellaneous:
-  # DNS zone:
+  # DNS zone that is containing the dynamic resource records:
   zone: "dyn.example.com"
-  # Default TTL for TXT records:
+  # Default TTL for TXT records (might be overwritten by the key table):
   defaultTTL: 10
 
 keyTable:
 - name: "homeRouter"
   enable: true
   key: "secret"
-  # DNS hostname (will be concatenated to "${hostName}.${zone}"):
+  # DNS hostname (will be concatenated to "${hostName}.${miscellaneous.zone}"):
   hostName: "home-router"
+  # Choose ingestMode between "getParameter" and "remoteAddress" (see README.md for further information):
   ingestMode: "getParameter"
+  # Overwrite miscellaneous.defaultTTL:
+  ttl: 5
 - name: "officeRouter"
   enable: true
   key: "topSecret"
   hostName: "office-router"
   ingestMode: "remoteAddress"
-  # Overwrite miscellaneous.defaultTTL:
-  ttl: 5
