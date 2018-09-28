@@ -22,10 +22,3 @@ func checkAuthorization(keyTable []Key, name string, key string) (*Key, error) {
 	}
 	return &Key{}, &Error{"Permission denied"}
 }
-
-func getTTL(keyItemTTL int, defaultTTL int) int {
-	if keyItemTTL != 0 {
-		return keyItemTTL
-	}
-	return defaultTTL
-}

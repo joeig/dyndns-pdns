@@ -17,8 +17,6 @@ powerDNS:
   vhost: "localhost"
   # PowerDNS API key:
   apiKey: "secret"
-
-miscellaneous:
   # DNS zone that is containing the dynamic resource records:
   zone: "dyn.example.com"
   # Default TTL for TXT records (might be overwritten by the key table):

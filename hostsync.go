@@ -58,9 +58,6 @@ func HostSync(c *gin.Context) {
 	}
 	log.Printf("Found key item: %+v", keyItem)
 
-	// Look up the proper TTL
-	ttl := getTTL(keyItem.TTL, C.Miscellaneous.DefaultTTL)
-
 	// Get IP addresses
 	var ipv4 string
 	var ipv6 string
@@ -123,7 +120,7 @@ func HostSync(c *gin.Context) {
 	// Clean up previously created DNS resource records
 	if ipv4 != "" || ipv6 != "" {
 		log.Print("Cleaning up any previously created IPv4 resource records")
-		if err := deleteIPv4ResourceRecord(C.Miscellaneous.Zone, keyItem.HostName); err != nil {
+		if err := C.PowerDNS.DeleteIPv4ResourceRecord(keyItem.HostName); err != nil {
 			log.Printf("%+v", err)
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv4 record deletion failed"}}}
 			log.Printf("%+v", payload)
@@ -131,7 +128,7 @@ func HostSync(c *gin.Context) {
 			return
 		}
 		log.Print("Cleaning up any previously created IPv6 resource records")
-		if err := deleteIPv6ResourceRecord(C.Miscellaneous.Zone, keyItem.HostName); err != nil {
+		if err := C.PowerDNS.DeleteIPv6ResourceRecord(keyItem.HostName); err != nil {
 			log.Printf("%+v", err)
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv6 record deletion failed"}}}
 			log.Printf("%+v", payload)
@@ -143,7 +140,7 @@ func HostSync(c *gin.Context) {
 	// Create new DNS resource records
 	if ipv4 != "" {
 		log.Print("Creating IPv4 resource records")
-		if err := addIPv4ResourceRecord(C.Miscellaneous.Zone, keyItem.HostName, ipv4, ttl); err != nil {
+		if err := C.PowerDNS.AddIPv4ResourceRecord(keyItem.HostName, ipv4, keyItem.TTL); err != nil {
 			log.Printf("%+v", err)
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv4 record creation failed"}}}
 			log.Printf("%+v", payload)
@@ -153,7 +150,7 @@ func HostSync(c *gin.Context) {
 	}
 	if ipv6 != "" {
 		log.Print("Creating IPv6 resource records")
-		if err := addIPv6ResourceRecord(C.Miscellaneous.Zone, keyItem.HostName, ipv6, ttl); err != nil {
+		if err := C.PowerDNS.AddIPv6ResourceRecord(keyItem.HostName, ipv6, keyItem.TTL); err != nil {
 			log.Printf("%+v", err)
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv6 record creation failed"}}}
 			log.Printf("%+v", payload)
@@ -163,11 +160,10 @@ func HostSync(c *gin.Context) {
 	}
 
 	// Build response payload
-	if keyItem.HostName != "" && keyItem.IngestMode != "" && ttl != 0 && (ipv4 != "" || ipv6 != "") {
+	if keyItem.HostName != "" && keyItem.IngestMode != "" && (ipv4 != "" || ipv6 != "") {
 		payload := HostSyncPayload{HostSyncObjects: []*HostSyncObject{{
 			HostName:   keyItem.HostName,
 			IngestMode: keyItem.IngestMode,
-			TTL:        ttl,
 			IPv4:       ipv4,
 			IPv6:       ipv6,
 		}}}
