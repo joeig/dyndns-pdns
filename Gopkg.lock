@@ -71,6 +71,14 @@
   version = "1.0.0"
 
 [[projects]]
+  digest = "1:3a26588bc48b96825977c1b3df964f8fd842cd6860cc26370588d3563433cf11"
+  name = "github.com/google/uuid"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "d460ce9f8df2e77fb1ba55ca87fafed96c607494"
+  version = "v1.0.0"
+
+[[projects]]
   digest = "1:c0d19ab64b32ce9fe5cf4ddceba78d5bc9807f0016db6b1183599da3dcc24d10"
   name = "github.com/hashicorp/hcl"
   packages = [
@@ -250,6 +258,7 @@
     "github.com/asaskevich/govalidator",
     "github.com/gin-gonic/gin",
     "github.com/google/jsonapi",
+    "github.com/google/uuid",
     "github.com/joeig/go-powerdns",
     "github.com/spf13/viper",
   ]
