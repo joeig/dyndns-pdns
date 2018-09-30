@@ -2,10 +2,18 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"os"
 )
+
+// BuildVersion is set at linking time
+var BuildVersion string
+
+// BuildGitCommit is set at linking time
+var BuildGitCommit string
 
 // Dry prohibits calling any backend services
 var Dry = false
@@ -18,7 +26,15 @@ func main() {
 	configFile := flag.String("config", "config.yml", "Configuration file")
 	dryFlag := flag.Bool("dry", false, "Dry run (do not call any backend services)")
 	debugFlag := flag.Bool("debug", false, "Debug mode")
+	version := flag.Bool("version", false, "Prints the version name")
 	flag.Parse()
+
+	// Version
+	if *version {
+		fmt.Printf("Build Version: %s\n", BuildVersion)
+		fmt.Printf("Build Git Commit: %s\n", BuildGitCommit)
+		os.Exit(0)
+	}
 
 	// Initialize configuration
 	parseConfig(&C, configFile)
