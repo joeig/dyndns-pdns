@@ -25,7 +25,7 @@ If you're intending to add the application to your systemd runlevel, you may wan
 
 ## Usage
 
-### Update IP address of a certain host
+### Update IP addresses of a certain host
 
 In order to update the IP address of a certain host, you can choose between to ingest modes:
 
