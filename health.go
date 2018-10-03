@@ -7,7 +7,7 @@ import (
 
 // HealthStatus contains information regarding the healthiness of the application
 type HealthStatus struct {
-	ApplicationRunning bool
+	ApplicationRunning bool `json:"applicationRunning"`
 }
 
 // Health Gin route
