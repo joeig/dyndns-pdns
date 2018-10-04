@@ -1,0 +1,118 @@
+swagger: "2.0"
+info:
+  description: "Collects IPv4/IPv6 addresses of network devices (routers, firewalls etc.) and writes the corresponding PowerDNS resource records."
+  version: "v1"
+  title: "Dynamic DNS Collector for PowerDNS"
+basePath: "/v1"
+tags:
+- name: "host"
+- name: "internals"
+paths:
+  /host/{name}/sync:
+    get:
+      tags:
+      - "host"
+      summary: "Updates IP addresses of a certain host"
+      operationId: "syncHost"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of the host"
+        required: true
+        type: "string"
+      - name: "key"
+        in: "query"
+        description: "Key of the corresponding host item"
+        required: true
+        type: "string"
+      - name: "ipv4"
+        in: "query"
+        description: "IPv4 address (required if ingestMode is \"getParameter\")"
+        required: false
+        type: "string"
+      - name: "ipv6"
+        in: "query"
+        description: "IPv6 address (required if ingestMode is \"getParameter\")"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: '#/definitions/HostSyncObjects'
+        400:
+          description: "Bad Request"
+          schema:
+            $ref: '#/definitions/Errors'
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: '#/definitions/Errors'
+        403:
+          description: "Forbidden"
+          schema:
+            $ref: '#/definitions/Errors'
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: '#/definitions/Errors'
+  /health:
+    get:
+      tags:
+      - "internals"
+      summary: "Health check endpoint"
+      operationId: "health"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: '#/definitions/HealthCheckObject'
+        500:
+          description: "Internal Server Error"
+          schema:
+            $ref: '#/definitions/Errors'
+definitions:
+  HostSyncObjects:
+    type: "object"
+    properties:
+      hostSyncObjects:
+        type: "array"
+        items:
+          $ref: "#/definitions/HostSyncObject"
+  HostSyncObject:
+    type: "object"
+    properties:
+      hostName:
+        type: "string"
+      ingestMode:
+        type: "string"
+      ttl:
+        type: "integer"
+      ipv4:
+        type: "string"
+      ipv6:
+        type: "string"
+  HealthCheckObject:
+    type: "object"
+    properties:
+      applicationRunning:
+        type: "boolean"
+  Errors:
+    type: "object"
+    properties:
+      errors:
+        type: "array"
+        items:
+          $ref: '#/definitions/Error'
+  Error:
+    type: "object"
+    properties:
+      title:
+        type: "string"
+externalDocs:
+  description: "Find out more on GitHub"
+  url: "https://github.com/joeig/dyndns-pdns"
