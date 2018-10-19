@@ -5,8 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/jsonapi"
 	"log"
+	"net"
 	"net/http"
-	"strings"
 )
 
 // HostSyncPayload returns a payload containing HostSyncObjects
@@ -90,7 +90,11 @@ func HostSync(c *gin.Context) {
 		break
 	case IngestModeRemoteAddress:
 		log.Printf("Processing ingest for %+v mode", IngestModeRemoteAddress)
-		address := strings.Split(c.Request.RemoteAddr, ":")[0]
+		// Under certain circumstances, RemoteAddr contains also the port number
+		address, _, err := net.SplitHostPort(c.Request.RemoteAddr)
+		if err != nil {
+			address = c.Request.RemoteAddr
+		}
 		log.Printf("Received address=\"%s\"", address)
 		if govalidator.IsIPv4(address) {
 			ipv4 = address
