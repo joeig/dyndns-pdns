@@ -42,6 +42,7 @@ func main() {
 	if Dry {
 		log.Print("Dry run enabled")
 	}
+	C.PowerDNS.Dry = Dry
 	Debug = *debugFlag
 	if Debug {
 		gin.SetMode("debug")

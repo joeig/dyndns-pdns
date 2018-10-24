@@ -57,5 +57,4 @@ func parseConfig(config *Config, configFile *string) {
 	if err := viper.Unmarshal(&config); err != nil {
 		panic(fmt.Errorf("%s", err))
 	}
-	C.PowerDNS.Dry = Dry
 }
