@@ -1,4 +1,4 @@
-package pdns
+package powerdns
 
 // PowerDNS defines the configuration for the PowerDNS authoritative server
 type PowerDNS struct {

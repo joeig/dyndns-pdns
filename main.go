@@ -38,6 +38,7 @@ func main() {
 
 	// Initialize configuration
 	parseConfig(&C, configFile)
+	setDNSProvider(&dnsProvider)
 	Dry = *dryFlag
 	if Dry {
 		log.Print("Dry run enabled")

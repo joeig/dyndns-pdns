@@ -21,6 +21,7 @@ func assertHostSyncComponent(t *testing.T, router *gin.Engine, method string, ur
 func TestHostSync(t *testing.T) {
 	configFile := "config.dist.yml"
 	parseConfig(&C, &configFile)
+	setDNSProvider(&dnsProvider)
 	Dry = true
 	C.PowerDNS.Dry = Dry
 	router := getGinEngine()

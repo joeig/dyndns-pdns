@@ -124,7 +124,7 @@ func HostSync(c *gin.Context) {
 	// Clean up previously created DNS resource records
 	if ipv4 != "" || ipv6 != "" {
 		log.Print("Cleaning up any previously created IPv4 resource records")
-		if err := C.PowerDNS.DeleteIPv4ResourceRecord(keyItem.HostName); err != nil {
+		if err := dnsProvider.DeleteIPv4ResourceRecord(keyItem.HostName); err != nil {
 			log.Printf("%+v", err)
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv4 record deletion failed"}}}
 			log.Printf("%+v", payload)
@@ -132,7 +132,7 @@ func HostSync(c *gin.Context) {
 			return
 		}
 		log.Print("Cleaning up any previously created IPv6 resource records")
-		if err := C.PowerDNS.DeleteIPv6ResourceRecord(keyItem.HostName); err != nil {
+		if err := dnsProvider.DeleteIPv6ResourceRecord(keyItem.HostName); err != nil {
 			log.Printf("%+v", err)
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv6 record deletion failed"}}}
 			log.Printf("%+v", payload)
@@ -144,7 +144,7 @@ func HostSync(c *gin.Context) {
 	// Create new DNS resource records
 	if ipv4 != "" {
 		log.Print("Creating IPv4 resource records")
-		if err := C.PowerDNS.AddIPv4ResourceRecord(keyItem.HostName, ipv4, keyItem.TTL); err != nil {
+		if err := dnsProvider.AddIPv4ResourceRecord(keyItem.HostName, ipv4, keyItem.TTL); err != nil {
 			log.Printf("%+v", err)
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv4 record creation failed"}}}
 			log.Printf("%+v", payload)
@@ -154,7 +154,7 @@ func HostSync(c *gin.Context) {
 	}
 	if ipv6 != "" {
 		log.Print("Creating IPv6 resource records")
-		if err := C.PowerDNS.AddIPv6ResourceRecord(keyItem.HostName, ipv6, keyItem.TTL); err != nil {
+		if err := dnsProvider.AddIPv6ResourceRecord(keyItem.HostName, ipv6, keyItem.TTL); err != nil {
 			log.Printf("%+v", err)
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv6 record creation failed"}}}
 			log.Printf("%+v", payload)

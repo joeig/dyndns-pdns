@@ -1,4 +1,4 @@
-package pdns
+package powerdns
 
 import (
 	"fmt"

@@ -10,6 +10,9 @@ server:
     # TLS key file:
     keyFile: "server.key"
 
+# Use PowerDNS provider:
+dnsProviderType: "powerDNS"
+
 powerDNS:
   # PowerDNS API base URL:
   baseURL: "http://127.0.0.1:8080/"

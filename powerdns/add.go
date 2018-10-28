@@ -1,7 +1,8 @@
-package pdns
+package powerdns
 
 import (
 	"fmt"
+	"github.com/joeig/dyndns-pdns/tools"
 	"github.com/joeig/go-powerdns"
 	"log"
 )
@@ -29,7 +30,7 @@ func (p *PowerDNS) addPowerDNSResourceRecord(hostname string, recordType string,
 		return err
 	}
 	name := fmt.Sprintf("%s.%s", hostname, p.Zone)
-	thisTTL := getTTL(ttl, p.DefaultTTL)
+	thisTTL := tools.GetTTL(ttl, p.DefaultTTL)
 	log.Printf("Generated name='%s' ttl=%d", name, thisTTL)
 	if err := zone.AddRecord(name, recordType, thisTTL, []string{content}); err != nil {
 		log.Printf("Error changing %s record: %+v", recordType, err)

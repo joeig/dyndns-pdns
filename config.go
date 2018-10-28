@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/joeig/dyndns-pdns/pdns"
+	"github.com/joeig/dyndns-pdns/powerdns"
 	"github.com/spf13/viper"
 )
 
@@ -15,9 +15,10 @@ const (
 
 // Config contains the primary configuration structure of the application
 type Config struct {
-	Server   Server        `mapstructure:"server"`
-	PowerDNS pdns.PowerDNS `mapstructure:"powerDNS"`
-	KeyTable []Key         `mapstructure:"keyTable"`
+	Server          Server            `mapstructure:"server"`
+	DNSProviderType DNSProviderType   `mapstructure:"dnsProviderType"`
+	PowerDNS        powerdns.PowerDNS `mapstructure:"powerDNS"`
+	KeyTable        []Key             `mapstructure:"keyTable"`
 }
 
 // Server defines the structure of the server configuration
