@@ -8,18 +8,18 @@ import (
 )
 
 // Adds an unique request ID to every single Gin request
-func requestIdMiddleware() gin.HandlerFunc {
+func requestIDMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		uuid4, err := uuid.NewRandom()
 		if err != nil {
 			log.Fatal("Unable to generate request Id")
 			return
 		}
-		requestId := uuid4.String()
-		c.Set("RequestId", requestId)
-		c.Header("X-Request-Id", requestId)
-		log.SetPrefix(fmt.Sprintf("[%s] ", requestId))
-		log.Printf("Set request Id to \"%s\"", requestId)
+		requestID := uuid4.String()
+		c.Set("RequestId", requestID)
+		c.Header("X-Request-Id", requestID)
+		log.SetPrefix(fmt.Sprintf("[%s] ", requestID))
+		log.Printf("Set request Id to \"%s\"", requestID)
 		c.Next()
 	}
 }
