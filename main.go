@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
-	"net/http"
 	"os"
 )
 
@@ -56,7 +55,7 @@ func main() {
 
 	// Run server
 	if C.Server.TLS.Enable {
-		log.Fatal(http.ListenAndServeTLS(C.Server.ListenAddress, C.Server.TLS.CertFile, C.Server.TLS.KeyFile, router))
+		log.Fatal(router.RunTLS(C.Server.ListenAddress, C.Server.TLS.CertFile, C.Server.TLS.KeyFile))
 	}
-	log.Fatal(http.ListenAndServe(C.Server.ListenAddress, router))
+	log.Fatal(router.Run(C.Server.ListenAddress))
 }
