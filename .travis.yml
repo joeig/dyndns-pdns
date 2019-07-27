@@ -1,7 +1,7 @@
 ---
 language: go
 go:
-- "1.11.x"
+- "1.12.x"
 gobuild_args: -ldflags "-X \"main.BuildVersion=$TRAVIS_TAG\" -X \"main.BuildGitCommit=$TRAVIS_COMMIT\""
 before_install:
 - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
