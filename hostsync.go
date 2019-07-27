@@ -74,20 +74,17 @@ func HostSync(c *gin.Context) {
 			return
 		}
 		if ipv4 != "" && !govalidator.IsIPv4(ipv4) {
-			ipv4 = ""
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv4 address invalid"}}}
 			log.Printf("%+v", payload)
 			c.JSON(http.StatusBadRequest, payload)
 			return
 		}
 		if ipv6 != "" && !govalidator.IsIPv6(ipv6) {
-			ipv6 = ""
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "IPv6 address invalid"}}}
 			log.Printf("%+v", payload)
 			c.JSON(http.StatusBadRequest, payload)
 			return
 		}
-		break
 	case IngestModeRemoteAddress:
 		log.Printf("Processing ingest for %+v mode", IngestModeRemoteAddress)
 		// Under certain circumstances, RemoteAddr contains also the port number
@@ -103,17 +100,12 @@ func HostSync(c *gin.Context) {
 			ipv4 = ""
 			ipv6 = address
 		} else {
-			ipv4 = ""
-			ipv6 = ""
 			payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "Invalid remote address"}}}
 			log.Printf("%+v", payload)
 			c.JSON(http.StatusBadRequest, payload)
 			return
 		}
-		break
 	default:
-		ipv4 = ""
-		ipv6 = ""
 		log.Printf("Invalid ingest mode configuration for key item name \"%s\"", keyItem.Name)
 		payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "Server configuration error"}}}
 		log.Printf("%+v", payload)
@@ -178,5 +170,4 @@ func HostSync(c *gin.Context) {
 	payload := jsonapi.ErrorsPayload{Errors: []*jsonapi.ErrorObject{{Title: "HostSync request process error"}}}
 	log.Printf("%+v", payload)
 	c.JSON(http.StatusInternalServerError, payload)
-	return
 }

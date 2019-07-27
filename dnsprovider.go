@@ -22,7 +22,6 @@ func setDNSProvider(d *DNSProvider) {
 	switch C.DNSProviderType {
 	case DNSProviderTypePowerDNS:
 		*d = &C.PowerDNS
-		break
 	default:
 		panic(fmt.Errorf("invalid dnsProviderType \"%s\"", C.DNSProviderType))
 	}

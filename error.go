@@ -9,5 +9,5 @@ type Error struct {
 
 // Error returns an error message string
 func (e *Error) Error() string {
-	return fmt.Sprintf("%s", e.Message)
+	return fmt.Sprintf(e.Message)
 }
