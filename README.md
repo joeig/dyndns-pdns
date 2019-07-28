@@ -15,13 +15,13 @@ You need `go` and `GOBIN` in your `PATH`. Once that is done, install dyndns-pdns
 go get -u github.com/joeig/dyndns-pdns
 ~~~
 
-After that, copy [`config.dist.yml`](config.dist.yml) to `config.yml`, replace the default settings and run the binary:
+After that, copy [`config.dist.yml`](configs/config.dist.yml) to `config.yml`, replace the default settings and run the binary:
 
 ~~~ bash
 dyndns-pdns -config=/path/to/config.yml
 ~~~
 
-If you're intending to add the application to your systemd runlevel, you may want to take a look at [`scripts/dyndns-pdns.service`](scripts/dyndns-pdns.service).
+If you're intending to add the application to your systemd runlevel, you may want to take a look at [`init/dyndns-pdns.service`](init/dyndns-pdns.service).
 
 ## Usage
 

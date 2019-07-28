@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/joeig/dyndns-pdns/powerdns"
+	"github.com/joeig/dyndns-pdns/pkg/powerdns"
 	"github.com/spf13/viper"
 )
 

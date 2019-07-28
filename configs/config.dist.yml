@@ -26,17 +26,17 @@ powerDNS:
   defaultTTL: 10
 
 keyTable:
-- name: "homeRouter"
-  enable: true
-  key: "secret"
-  # DNS hostname (will be concatenated to "${hostName}.${miscellaneous.zone}"):
-  hostName: "home-router"
-  # Choose ingestMode between "getParameter" and "remoteAddress" (see README.md for further information):
-  ingestMode: "getParameter"
-  # Overwrite miscellaneous.defaultTTL:
-  ttl: 5
-- name: "officeRouter"
-  enable: true
-  key: "topSecret"
-  hostName: "office-router"
-  ingestMode: "remoteAddress"
+  - name: "homeRouter"
+    enable: true
+    key: "secret"
+    # DNS hostname (will be concatenated to "${hostName}.${miscellaneous.zone}"):
+    hostName: "home-router"
+    # Choose ingestMode between "getParameter" and "remoteAddress" (see README.md for further information):
+    ingestMode: "getParameter"
+    # Overwrite miscellaneous.defaultTTL:
+    ttl: 5
+  - name: "officeRouter"
+    enable: true
+    key: "topSecret"
+    hostName: "office-router"
+    ingestMode: "remoteAddress"

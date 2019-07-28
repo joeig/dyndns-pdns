@@ -1,6 +1,6 @@
-config.yml
-dyndns-pdns
-dyndns-pdns_linux_amd64
-server.crt
-server.csr
-server.key
+/configs/config.yml
+/configs/server.crt
+/configs/server.csr
+/configs/server.key
+/dyndns-pdns
+/dyndns-pdns_linux_amd64

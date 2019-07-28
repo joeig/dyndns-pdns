@@ -2,7 +2,7 @@ package powerdns
 
 import (
 	"fmt"
-	"github.com/joeig/dyndns-pdns/tools"
+	"github.com/joeig/dyndns-pdns/pkg/tools"
 	"github.com/joeig/go-powerdns"
 	"log"
 )
