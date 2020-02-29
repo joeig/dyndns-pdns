@@ -2,23 +2,25 @@ package main
 
 import (
 	"fmt"
-	"github.com/joeig/dyndns-pdns/pkg/powerdns"
+	"github.com/joeig/dyndns-pdns/pkg/dnsprovider"
+	"github.com/joeig/dyndns-pdns/pkg/dnsprovider/powerdns"
+	"github.com/joeig/dyndns-pdns/pkg/ingest"
 	"github.com/spf13/viper"
 )
 
 const (
 	// IngestModeGetParameter sets the ingest mode to GET
-	IngestModeGetParameter IngestMode = "getParameter"
+	IngestModeGetParameter ingest.IngestModeType = "getParameter"
 	// IngestModeRemoteAddress sets the ingest mode to the remote address
-	IngestModeRemoteAddress IngestMode = "remoteAddress"
+	IngestModeRemoteAddress ingest.IngestModeType = "remoteAddress"
 )
 
 // Config contains the primary configuration structure of the application
 type Config struct {
-	Server          Server            `mapstructure:"server"`
-	DNSProviderType DNSProviderType   `mapstructure:"dnsProviderType"`
-	PowerDNS        powerdns.PowerDNS `mapstructure:"powerDNS"`
-	KeyTable        []Key             `mapstructure:"keyTable"`
+	Server          Server                      `mapstructure:"server"`
+	DNSProviderType dnsprovider.DNSProviderType `mapstructure:"dnsProviderType"`
+	PowerDNS        powerdns.PowerDNS           `mapstructure:"powerDNS"`
+	KeyTable        []Key                       `mapstructure:"keyTable"`
 }
 
 // Server defines the structure of the server configuration
@@ -34,17 +36,14 @@ type TLS struct {
 	KeyFile  string `mapstructure:"keyFile"`
 }
 
-// IngestMode sets the IP address ingest mode
-type IngestMode string
-
 // Key defines the structure of a certain key item
 type Key struct {
-	Name       string     `mapstructure:"name"`
-	Enable     bool       `mapstructure:"enable"`
-	Key        string     `mapstructure:"key"`
-	HostName   string     `mapstructure:"hostName"`
-	IngestMode IngestMode `mapstructure:"ingestMode"`
-	TTL        uint32     `mapstructure:"ttl"`
+	Name       string                `mapstructure:"name"`
+	Enable     bool                  `mapstructure:"enable"`
+	Key        string                `mapstructure:"key"`
+	HostName   string                `mapstructure:"hostName"`
+	IngestMode ingest.IngestModeType `mapstructure:"ingestMode"`
+	TTL        uint32                `mapstructure:"ttl"`
 }
 
 // C initializes the primary configuration of the application

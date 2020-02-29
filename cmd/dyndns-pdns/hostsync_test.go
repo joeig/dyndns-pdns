@@ -21,10 +21,10 @@ func assertHostSyncComponent(t *testing.T, router *gin.Engine, method string, ur
 func TestHostSync(t *testing.T) {
 	configFile := "../../configs/config.dist.yml"
 	parseConfig(&C, &configFile)
-	setDNSProvider(&dnsProvider)
+	setDNSProvider(&activeDNSProvider)
 	Dry = true
 	C.PowerDNS.Dry = Dry
-	router := getGinEngine()
+	router := setupGinEngine()
 
 	// OK
 	t.Run("TestGetParameterIPv4IPv6OK", func(t *testing.T) {

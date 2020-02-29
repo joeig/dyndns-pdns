@@ -11,9 +11,10 @@ type HealthStatus struct {
 }
 
 // Health Gin route
-func Health(c *gin.Context) {
+func Health(ctx *gin.Context) {
 	hs := &HealthStatus{
 		ApplicationRunning: true,
 	}
-	c.JSON(http.StatusOK, hs)
+
+	ctx.JSON(http.StatusOK, hs)
 }

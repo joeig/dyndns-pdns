@@ -5,38 +5,38 @@ info:
   title: "Dynamic DNS Collector for PowerDNS"
 basePath: "/v1"
 tags:
-- name: "host"
-- name: "internals"
+  - name: "host"
+  - name: "internals"
 paths:
   /host/{name}/sync:
     get:
       tags:
-      - "host"
+        - "host"
       summary: "Updates IP addresses of a certain host"
       operationId: "syncHost"
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "name"
-        in: "path"
-        description: "Name of the host"
-        required: true
-        type: "string"
-      - name: "key"
-        in: "query"
-        description: "Key of the corresponding host item"
-        required: true
-        type: "string"
-      - name: "ipv4"
-        in: "query"
-        description: "IPv4 address (required if ingestMode is \"getParameter\")"
-        required: false
-        type: "string"
-      - name: "ipv6"
-        in: "query"
-        description: "IPv6 address (required if ingestMode is \"getParameter\")"
-        required: false
-        type: "string"
+        - name: "name"
+          in: "path"
+          description: "Name of the host"
+          required: true
+          type: "string"
+        - name: "key"
+          in: "query"
+          description: "Key of the corresponding host item"
+          required: true
+          type: "string"
+        - name: "ipv4"
+          in: "query"
+          description: "IPv4 address (required if ingestMode is \"getParameter\")"
+          required: false
+          type: "string"
+        - name: "ipv6"
+          in: "query"
+          description: "IPv6 address (required if ingestMode is \"getParameter\")"
+          required: false
+          type: "string"
       responses:
         200:
           description: "OK"
@@ -61,11 +61,11 @@ paths:
   /health:
     get:
       tags:
-      - "internals"
+        - "internals"
       summary: "Health check endpoint"
       operationId: "health"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         200:
           description: "OK"
