@@ -6,6 +6,6 @@ type PowerDNS struct {
 	VHost      string `mapstructure:"vhost"`
 	APIKey     string `mapstructure:"apiKey"`
 	Zone       string `mapstructure:"zone"`
-	DefaultTTL int    `mapstructure:"defaultTTL"`
+	DefaultTTL uint32 `mapstructure:"defaultTTL"`
 	Dry        bool   `mapstructure:"dry"`
 }

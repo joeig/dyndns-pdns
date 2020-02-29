@@ -10,8 +10,8 @@ const DNSProviderTypePowerDNS DNSProviderType = "powerDNS"
 
 // DNSProvider is an interface for basic DNS operations
 type DNSProvider interface {
-	AddIPv4ResourceRecord(hostname string, ipv4 string, ttl int) error
-	AddIPv6ResourceRecord(hostname string, ipv6 string, ttl int) error
+	AddIPv4ResourceRecord(hostname string, ipv4 string, ttl uint32) error
+	AddIPv6ResourceRecord(hostname string, ipv6 string, ttl uint32) error
 	DeleteIPv4ResourceRecord(hostname string) error
 	DeleteIPv6ResourceRecord(hostname string) error
 }
