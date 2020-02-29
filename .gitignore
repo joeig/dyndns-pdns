@@ -2,5 +2,6 @@
 /configs/server.crt
 /configs/server.csr
 /configs/server.key
+/c.out
 /dyndns-pdns
 /dyndns-pdns_linux_amd64

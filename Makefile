@@ -2,15 +2,16 @@ GOCMD=go
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
+GOCOVER=$(GOCMD) tool cover
 GOGET=$(GOCMD) get
 GOFMT=gofmt
 BINARY_NAME=dyndns-pdns
 GOFILES=$(shell find . -type f -name '*.go' -not -path "./vendor/*")
 
 .DEFAULT_GOAL := all
-.PHONY: all build build-linux-amd64 test check-fmt fmt clean run
+.PHONY: all build build-linux-amd64 test coverage check-fmt fmt clean run
 
-all: check-fmt fmt test build
+all: check-fmt test coverage build
 
 build:
 	$(GOBUILD) -o $(BINARY_NAME) -v ./cmd/dyndns-pdns
@@ -19,7 +20,10 @@ build-linux-amd64:
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)_linux_amd64 -v ./cmd/dyndns-pdns
 
 test:
-	$(GOTEST) -v ./...
+	$(GOTEST) -v ./... -covermode=count -coverprofile=c.out
+
+coverage:
+	$(GOCOVER) -func=c.out
 
 check-fmt:
 	$(GOFMT) -d ${GOFILES}
