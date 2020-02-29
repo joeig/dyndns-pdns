@@ -44,7 +44,7 @@ type Key struct {
 	Key        string     `mapstructure:"key"`
 	HostName   string     `mapstructure:"hostName"`
 	IngestMode IngestMode `mapstructure:"ingestMode"`
-	TTL        int        `mapstructure:"ttl"`
+	TTL        uint32     `mapstructure:"ttl"`
 }
 
 // C initializes the primary configuration of the application

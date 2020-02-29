@@ -1,7 +1,5 @@
 # github.com/asaskevich/govalidator v0.0.0-20180315120708-ccb8e960c48f
 github.com/asaskevich/govalidator
-# github.com/dghubble/sling v1.1.0
-github.com/dghubble/sling
 # github.com/fsnotify/fsnotify v1.4.7
 github.com/fsnotify/fsnotify
 # github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7
@@ -13,8 +11,6 @@ github.com/gin-gonic/gin/json
 github.com/gin-gonic/gin/render
 # github.com/golang/protobuf v1.2.0
 github.com/golang/protobuf/proto
-# github.com/google/go-querystring v1.0.0
-github.com/google/go-querystring/query
 # github.com/google/jsonapi v0.0.0-20170708005851-46d3ced04344
 github.com/google/jsonapi
 # github.com/google/uuid v1.0.0
@@ -30,8 +26,8 @@ github.com/hashicorp/hcl/hcl/token
 github.com/hashicorp/hcl/json/parser
 github.com/hashicorp/hcl/json/scanner
 github.com/hashicorp/hcl/json/token
-# github.com/joeig/go-powerdns v0.0.0-20180908222743-0af948d76047
-github.com/joeig/go-powerdns
+# github.com/joeig/go-powerdns/v2 v2.3.2
+github.com/joeig/go-powerdns/v2
 # github.com/json-iterator/go v1.1.5
 github.com/json-iterator/go
 # github.com/magiconair/properties v1.8.0
@@ -59,12 +55,12 @@ github.com/spf13/pflag
 github.com/spf13/viper
 # github.com/ugorji/go v1.1.1
 github.com/ugorji/go/codec
-# golang.org/x/sys v0.0.0-20180921163948-d47a0f339242
+# golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a
 golang.org/x/sys/unix
 # golang.org/x/text v0.3.0
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
 # gopkg.in/go-playground/validator.v8 v8.18.2
 gopkg.in/go-playground/validator.v8
-# gopkg.in/yaml.v2 v2.2.1
+# gopkg.in/yaml.v2 v2.2.2
 gopkg.in/yaml.v2
