@@ -7,7 +7,7 @@ import (
 )
 
 func TestHealth(t *testing.T) {
-	router := getGinEngine()
+	router := setupGinEngine()
 	res := httptest.NewRecorder()
 
 	req, _ := http.NewRequest(http.MethodGet, "/v1/health", nil)

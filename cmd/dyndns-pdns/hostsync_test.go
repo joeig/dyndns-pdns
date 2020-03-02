@@ -12,19 +12,21 @@ func assertHostSyncComponent(t *testing.T, router *gin.Engine, method string, ur
 	req.RemoteAddr = remoteAddr
 	res := httptest.NewRecorder()
 	router.ServeHTTP(res, req)
+
 	if res.Code != assertedCode {
 		t.Errorf("HTTP request to \"%s\" returned %d instead of %d", url, res.Code, assertedCode)
 	}
+
 	return res
 }
 
 func TestHostSync(t *testing.T) {
-	configFile := "../../configs/config.dist.yml"
+	configFile := "../../configs/config.test.yml"
 	parseConfig(&C, &configFile)
-	setDNSProvider(&dnsProvider)
+	setDNSProvider(&activeDNSProvider)
 	Dry = true
 	C.PowerDNS.Dry = Dry
-	router := getGinEngine()
+	router := setupGinEngine()
 
 	// OK
 	t.Run("TestGetParameterIPv4IPv6OK", func(t *testing.T) {

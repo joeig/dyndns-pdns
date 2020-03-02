@@ -9,7 +9,7 @@ jobs:
       - name: Set up Go ${{ matrix.goVer }}
         uses: actions/setup-go@v1
         with:
-          go-version: 1.13
+          go-version: 1.14
       - name: Check out code into the Go module directory
         uses: actions/checkout@v1
       - name: GolangCI-Lint
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        goVer: [1.13]
+        goVer: [1.14]
     steps:
       - name: Set up Go ${{ matrix.goVer }}
         uses: actions/setup-go@v1

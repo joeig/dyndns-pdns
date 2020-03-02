@@ -1,26 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"github.com/joeig/dyndns-pdns/pkg/dnsprovider"
+)
 
-// DNSProviderType sets the DNS provider type
-type DNSProviderType string
+// DNSProviderPowerDNS sets the DNS provider to PowerDNS.
+//
+// This setting uses a PowerDNS backend.
+const DNSProviderPowerDNS dnsprovider.DNSProviderType = "powerDNS"
 
-// DNSProviderTypePowerDNS sets the DNS provider type to PowerDNS
-const DNSProviderTypePowerDNS DNSProviderType = "powerDNS"
+var activeDNSProvider dnsprovider.DNSProvider
 
-// DNSProvider is an interface for basic DNS operations
-type DNSProvider interface {
-	AddIPv4ResourceRecord(hostname string, ipv4 string, ttl uint32) error
-	AddIPv6ResourceRecord(hostname string, ipv6 string, ttl uint32) error
-	DeleteIPv4ResourceRecord(hostname string) error
-	DeleteIPv6ResourceRecord(hostname string) error
-}
-
-var dnsProvider DNSProvider
-
-func setDNSProvider(d *DNSProvider) {
+func setDNSProvider(d *dnsprovider.DNSProvider) {
 	switch C.DNSProviderType {
-	case DNSProviderTypePowerDNS:
+	case DNSProviderPowerDNS:
 		*d = &C.PowerDNS
 	default:
 		panic(fmt.Errorf("invalid dnsProviderType \"%s\"", C.DNSProviderType))

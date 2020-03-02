@@ -54,6 +54,10 @@ http "https://dyn-ingest.example.com/v1/host/<device name>/sync?key=<key>"
 
 This option takes the IP address (IPv4 or IPv6) used by the client during the TCP handshake.
 
+### Comment regarding the update process
+
+The PowerDNS API is not transaction safe. Existing resource record entries, which belong to a specific host, are dropped, before the new IP addresses are inserted for that host. Due to potential delays between the "delete" step and the "add" step, there is a risk that the dynamic DNS hostname might become unavailable. In order to lower the impact caused by this behaviour, it is recommended to set your negative caching TTL to a low value.
+
 ## Examples
 
 ### Fritzbox (FritzOS)

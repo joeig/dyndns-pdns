@@ -1,4 +1,4 @@
-package tools
+package dnsprovider
 
 // GetTTL selects the proper value of two choices
 func GetTTL(keyItemTTL uint32, defaultTTL uint32) uint32 {

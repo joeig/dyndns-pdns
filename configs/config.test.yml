@@ -1,0 +1,30 @@
+---
+server:
+  listenAddress: "127.0.0.1:8000"
+  tls:
+    enable: true
+    certFile: "server.crt"
+    keyFile: "server.key"
+
+dnsProviderType: "powerDNS"
+
+powerDNS:
+  baseURL: "http://127.0.0.1:8080/"
+  vhost: "localhost"
+  apiKey: "secret"
+  zone: "dyn.example.com"
+  defaultTTL: 10
+
+keyTable:
+  - name: "homeRouter"
+    enable: true
+    key: "secret"
+    hostName: "home-router"
+    ingestMode: "getParameter"
+    cleanUpMode: "any"
+    ttl: 5
+  - name: "officeRouter"
+    enable: true
+    key: "topSecret"
+    hostName: "office-router"
+    ingestMode: "remoteAddress"
