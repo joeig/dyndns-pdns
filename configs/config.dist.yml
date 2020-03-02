@@ -33,6 +33,7 @@ keyTable:
     hostName: "home-router"
     # Choose ingestMode between "getParameter" and "remoteAddress" (see README.md for further information):
     ingestMode: "getParameter"
+    cleanUpMode: "any"
     # Overwrite miscellaneous.defaultTTL:
     ttl: 5
   - name: "officeRouter"

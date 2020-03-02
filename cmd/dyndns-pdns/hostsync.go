@@ -17,11 +17,12 @@ type HostSyncPayload struct {
 
 // HostSyncObject contains a payload for the requester in order to identify the values that have been stored
 type HostSyncObject struct {
-	HostName   string                `json:"hostName"`
-	IngestMode ingest.IngestModeType `json:"ingestMode"`
-	TTL        int                   `json:"ttl"`
-	IPv4       string                `json:"ipv4"`
-	IPv6       string                `json:"ipv6"`
+	HostName    string                `json:"hostName"`
+	IngestMode  ingest.IngestModeType `json:"ingestMode"`
+	CleanUpMode CleanUpModeType       `json:"cleanUpMode"`
+	TTL         int                   `json:"ttl"`
+	IPv4        string                `json:"ipv4"`
+	IPv6        string                `json:"ipv6"`
 }
 
 // HostSync Gin route
@@ -49,7 +50,7 @@ func HostSync(ctx *gin.Context) {
 	}
 
 	if ipSet.HasIPv4() || ipSet.HasIPv6() {
-		if cleanUpOutdatedResourceRecords(ctx, keyItem.HostName) != nil {
+		if cleanUpOutdatedResourceRecords(ctx, ipSet, keyItem) != nil {
 			return
 		}
 	}
@@ -121,21 +122,29 @@ func getIPAddresses(ctx *gin.Context, keyItem *Key) (*ingest.IPSet, error) {
 	return activeIngestMode.Process()
 }
 
-func cleanUpOutdatedResourceRecords(ctx *gin.Context, hostname string) error {
-	log.Print("Cleaning up any previously created IPv4 resource records")
+func cleanUpOutdatedResourceRecords(ctx *gin.Context, ipSet *ingest.IPSet, keyItem *Key) error {
+	if keyItem.CleanUpMode == CleanUpModeAny || (keyItem.CleanUpMode == CleanUpModeRequestBased && ipSet.HasIPv4()) {
+		log.Print("Cleaning up any previously created IPv4 resource records")
 
-	if err := activeDNSProvider.DeleteIPv4ResourceRecord(hostname); err != nil {
-		log.Printf("%+v", err)
-		ginResponse.GinJSONError(ctx, http.StatusInternalServerError, "IPv4 record deletion failed")
-		return &Error{}
+		if err := activeDNSProvider.DeleteIPv4ResourceRecord(keyItem.HostName); err != nil {
+			log.Printf("%+v", err)
+			ginResponse.GinJSONError(ctx, http.StatusInternalServerError, "IPv4 record deletion failed")
+			return &Error{}
+		}
+	} else {
+		log.Print("Skipping clean up of previously created IPv4 resource records")
 	}
 
-	log.Print("Cleaning up any previously created IPv6 resource records")
+	if keyItem.CleanUpMode == CleanUpModeAny || (keyItem.CleanUpMode == CleanUpModeRequestBased && ipSet.HasIPv6()) {
+		log.Print("Cleaning up any previously created IPv6 resource records")
 
-	if err := activeDNSProvider.DeleteIPv6ResourceRecord(hostname); err != nil {
-		log.Printf("%+v", err)
-		ginResponse.GinJSONError(ctx, http.StatusInternalServerError, "IPv6 record deletion failed")
-		return &Error{}
+		if err := activeDNSProvider.DeleteIPv6ResourceRecord(keyItem.HostName); err != nil {
+			log.Printf("%+v", err)
+			ginResponse.GinJSONError(ctx, http.StatusInternalServerError, "IPv6 record deletion failed")
+			return &Error{}
+		}
+	} else {
+		log.Print("Skipping clean up of previously created IPv6 resource records")
 	}
 
 	return nil
@@ -184,10 +193,11 @@ func createNewResourceRecords(ctx *gin.Context, ipSet *ingest.IPSet, keyItem *Ke
 func buildResponsePayload(ctx *gin.Context, keyItem *Key, ipSet *ingest.IPSet) error {
 	if keyItem.HostName != "" && keyItem.IngestMode != "" && (ipSet.HasIPv4() || ipSet.HasIPv6()) {
 		payload := HostSyncPayload{HostSyncObjects: []*HostSyncObject{{
-			HostName:   keyItem.HostName,
-			IngestMode: keyItem.IngestMode,
-			IPv4:       ipSet.IPv4,
-			IPv6:       ipSet.IPv6,
+			HostName:    keyItem.HostName,
+			IngestMode:  keyItem.IngestMode,
+			CleanUpMode: keyItem.CleanUpMode,
+			IPv4:        ipSet.IPv4,
+			IPv6:        ipSet.IPv6,
 		}}}
 		log.Printf("Updated \"%s\" successfully", keyItem.Name)
 		ctx.JSON(http.StatusOK, payload)

@@ -5,14 +5,16 @@ import (
 	"github.com/joeig/dyndns-pdns/pkg/dnsprovider"
 )
 
-// DNSProviderTypePowerDNS sets the DNS provider type to PowerDNS
-const DNSProviderTypePowerDNS dnsprovider.DNSProviderType = "powerDNS"
+// DNSProviderPowerDNS sets the DNS provider to PowerDNS.
+//
+// This setting uses a PowerDNS backend.
+const DNSProviderPowerDNS dnsprovider.DNSProviderType = "powerDNS"
 
 var activeDNSProvider dnsprovider.DNSProvider
 
 func setDNSProvider(d *dnsprovider.DNSProvider) {
 	switch C.DNSProviderType {
-	case DNSProviderTypePowerDNS:
+	case DNSProviderPowerDNS:
 		*d = &C.PowerDNS
 	default:
 		panic(fmt.Errorf("invalid dnsProviderType \"%s\"", C.DNSProviderType))
