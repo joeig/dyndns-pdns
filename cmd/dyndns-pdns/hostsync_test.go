@@ -12,9 +12,11 @@ func assertHostSyncComponent(t *testing.T, router *gin.Engine, method string, ur
 	req.RemoteAddr = remoteAddr
 	res := httptest.NewRecorder()
 	router.ServeHTTP(res, req)
+
 	if res.Code != assertedCode {
 		t.Errorf("HTTP request to \"%s\" returned %d instead of %d", url, res.Code, assertedCode)
 	}
+
 	return res
 }
 

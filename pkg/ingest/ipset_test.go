@@ -18,6 +18,17 @@ func TestIPSetHasIPv4(t *testing.T) {
 	}
 }
 
+func TestIPSetIsIPv4(t *testing.T) {
+	ipSet1 := &IPSet{IPv4: "1.2.3.4"}
+	if !ipSet1.IsIPv4() {
+		t.Error("IPSet contains a valid IPv4 address, but returns false")
+	}
+	ipSet2 := &IPSet{IPv4: "bar"}
+	if ipSet2.IsIPv4() {
+		t.Error("IPSet contains an invalid IPv4 address, but returns true")
+	}
+}
+
 func TestIPSetHasIPv6(t *testing.T) {
 	ipSet1 := &IPSet{
 		IPv4: "foo",
@@ -31,5 +42,16 @@ func TestIPSetHasIPv6(t *testing.T) {
 	}
 	if ipSet2.HasIPv6() {
 		t.Error("IPSet has no IPv6, but returns true")
+	}
+}
+
+func TestIPSetIsIPv6(t *testing.T) {
+	ipSet1 := &IPSet{IPv6: "::1"}
+	if !ipSet1.IsIPv6() {
+		t.Error("IPSet contains a valid IPv6 address, but returns false")
+	}
+	ipSet2 := &IPSet{IPv6: "bar"}
+	if ipSet2.IsIPv6() {
+		t.Error("IPSet contains an invalid IPv6 address, but returns true")
 	}
 }
