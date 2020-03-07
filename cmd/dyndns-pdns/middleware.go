@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/joeig/dyndns-pdns/internal/genericerror"
 	"log"
 )
 
@@ -11,7 +12,7 @@ func generateRequestID() (string, error) {
 	uuid4, err := uuid.NewRandom()
 	if err != nil {
 		log.Fatal("Unable to generate request Id")
-		return "", &Error{}
+		return "", &genericerror.GenericError{}
 	}
 
 	return uuid4.String(), nil
