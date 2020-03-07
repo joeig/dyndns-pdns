@@ -1,4 +1,4 @@
-package main
+package yamlconfig
 
 import (
 	"fmt"
@@ -116,7 +116,8 @@ const (
 // C initializes the primary configuration of the application.
 var C Config
 
-func parseConfig(config *Config, configFile *string) {
+// ParseConfig loads a YAML configuration file
+func ParseConfig(config *Config, configFile *string) {
 	viper.SetConfigFile(*configFile)
 	if err := viper.ReadInConfig(); err != nil {
 		panic(fmt.Errorf("%s", err))

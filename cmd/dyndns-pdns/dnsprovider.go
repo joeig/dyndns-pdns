@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/joeig/dyndns-pdns/internal/yamlconfig"
 	"github.com/joeig/dyndns-pdns/pkg/dnsprovider"
 )
 
@@ -13,10 +14,10 @@ const DNSProviderPowerDNS dnsprovider.Type = "powerDNS"
 var activeDNSProvider dnsprovider.DNSProvider
 
 func setDNSProvider(d *dnsprovider.DNSProvider) {
-	switch C.DNSProviderType {
+	switch yamlconfig.C.DNSProviderType {
 	case DNSProviderPowerDNS:
-		*d = &C.PowerDNS
+		*d = &yamlconfig.C.PowerDNS
 	default:
-		panic(fmt.Errorf("invalid dnsProviderType \"%s\"", C.DNSProviderType))
+		panic(fmt.Errorf("invalid dnsProviderType \"%s\"", yamlconfig.C.DNSProviderType))
 	}
 }

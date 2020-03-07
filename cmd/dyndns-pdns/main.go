@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/joeig/dyndns-pdns/internal/yamlconfig"
 	"log"
 	"os"
 )
@@ -27,7 +28,7 @@ func toggleDryMode() {
 	if Dry {
 		log.Print("Dry run enabled")
 	}
-	C.PowerDNS.Dry = Dry
+	yamlconfig.C.PowerDNS.Dry = Dry
 }
 
 // Debug enables verbose log output
@@ -42,10 +43,10 @@ func toggleDebugMode() {
 }
 
 func runServer(router *gin.Engine) {
-	if C.Server.TLS.Enable {
-		log.Fatal(router.RunTLS(C.Server.ListenAddress, C.Server.TLS.CertFile, C.Server.TLS.KeyFile))
+	if yamlconfig.C.Server.TLS.Enable {
+		log.Fatal(router.RunTLS(yamlconfig.C.Server.ListenAddress, yamlconfig.C.Server.TLS.CertFile, yamlconfig.C.Server.TLS.KeyFile))
 	}
-	log.Fatal(router.Run(C.Server.ListenAddress))
+	log.Fatal(router.Run(yamlconfig.C.Server.ListenAddress))
 }
 
 func main() {
@@ -59,7 +60,7 @@ func main() {
 		printVersionAndExit()
 	}
 
-	parseConfig(&C, configFile)
+	yamlconfig.ParseConfig(&yamlconfig.C, configFile)
 	setDNSProvider(&activeDNSProvider)
 
 	Dry = *dryFlag

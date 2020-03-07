@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"github.com/joeig/dyndns-pdns/internal/yamlconfig"
+	"testing"
+)
 
 func TestCheckHost(t *testing.T) {
 	t.Run("TestCheckHostEmptyReturnNotEmpty", func(t *testing.T) {
@@ -49,13 +52,13 @@ func TestCheckKey(t *testing.T) {
 }
 
 func TestCheckAuthorization(t *testing.T) {
-	keyTable := []Key{
+	keyTable := []yamlconfig.Key{
 		{
 			Name:       "homeRouter",
 			Enable:     true,
 			Key:        "secret",
 			HostName:   "home-router",
-			IngestMode: IngestModeGetParameter,
+			IngestMode: yamlconfig.IngestModeGetParameter,
 			TTL:        1337,
 		},
 	}

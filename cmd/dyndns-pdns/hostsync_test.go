@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/joeig/dyndns-pdns/internal/yamlconfig"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -22,10 +23,10 @@ func assertHostSyncComponent(t *testing.T, router *gin.Engine, method string, ur
 
 func TestHostSync(t *testing.T) {
 	configFile := "../../configs/config.test.yml"
-	parseConfig(&C, &configFile)
+	yamlconfig.ParseConfig(&yamlconfig.C, &configFile)
 	setDNSProvider(&activeDNSProvider)
 	Dry = true
-	C.PowerDNS.Dry = Dry
+	yamlconfig.C.PowerDNS.Dry = Dry
 	router := setupGinEngine()
 
 	// OK
