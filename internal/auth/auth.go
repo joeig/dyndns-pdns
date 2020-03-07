@@ -1,4 +1,4 @@
-package main
+package auth
 
 import (
 	"github.com/joeig/dyndns-pdns/internal/genericerror"
@@ -15,7 +15,8 @@ func checkHost(host string) (string, error) {
 	return host, nil
 }
 
-func getName(host string) (string, error) {
+// GetName validates the given host name
+func GetName(host string) (string, error) {
 	name, err := checkHost(host)
 	if err != nil {
 		return name, &ginresponse.HTTPError{Message: err.Error(), HTTPErrorCode: http.StatusUnauthorized}
@@ -32,7 +33,8 @@ func checkKey(key string) (string, error) {
 	return key, nil
 }
 
-func getKey(key string) (string, error) {
+// GetKey validates the given key
+func GetKey(key string) (string, error) {
 	key, err := checkKey(key)
 	if err != nil {
 		return key, &ginresponse.HTTPError{Message: err.Error(), HTTPErrorCode: http.StatusUnauthorized}
@@ -51,7 +53,8 @@ func checkAuthorization(keyTable []yamlconfig.Key, name string, key string) (*ya
 	return &yamlconfig.Key{}, &genericerror.GenericError{Message: "Permission denied"}
 }
 
-func getKeyItem(name string, key string) (*yamlconfig.Key, error) {
+// GetKeyItem validates the given host name and key and returns a proper key item from the configuration
+func GetKeyItem(name string, key string) (*yamlconfig.Key, error) {
 	keyItem, err := checkAuthorization(yamlconfig.C.KeyTable, name, key)
 	if err != nil {
 		return keyItem, &ginresponse.HTTPError{Message: err.Error(), HTTPErrorCode: http.StatusForbidden}

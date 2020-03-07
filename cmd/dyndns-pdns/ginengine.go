@@ -1,11 +1,14 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/joeig/dyndns-pdns/internal/ginmiddleware"
+)
 
 // Initializes the Gin engine
 func setupGinEngine() *gin.Engine {
 	router := gin.Default()
-	router.Use(requestIDMiddleware())
+	router.Use(ginmiddleware.RequestIDMiddleware())
 
 	v1 := router.Group("/v1")
 	{

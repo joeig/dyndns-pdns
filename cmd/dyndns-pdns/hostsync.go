@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/joeig/dyndns-pdns/internal/auth"
 	"github.com/joeig/dyndns-pdns/internal/genericerror"
 	"github.com/joeig/dyndns-pdns/internal/ginresponse"
 	"github.com/joeig/dyndns-pdns/internal/yamlconfig"
@@ -31,19 +32,19 @@ type HostSyncObject struct {
 func HostSync(ctx *gin.Context) {
 	ctx.Header("Cache-Control", "no-cache")
 
-	name, err := getName(ctx.Param("name"))
+	name, err := auth.GetName(ctx.Param("name"))
 	if err != nil {
 		ginresponse.GinJSONError(ctx, err)
 		return
 	}
 
-	key, err := getKey(ctx.Query("key"))
+	key, err := auth.GetKey(ctx.Query("key"))
 	if err != nil {
 		ginresponse.GinJSONError(ctx, err)
 		return
 	}
 
-	keyItem, err := getKeyItem(name, key)
+	keyItem, err := auth.GetKeyItem(name, key)
 	if err != nil {
 		ginresponse.GinJSONError(ctx, err)
 		return

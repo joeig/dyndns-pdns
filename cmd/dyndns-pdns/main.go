@@ -61,7 +61,7 @@ func main() {
 	}
 
 	yamlconfig.ParseConfig(&yamlconfig.C, configFile)
-	setDNSProvider(&activeDNSProvider)
+	yamlconfig.SetDNSProvider(&yamlconfig.ActiveDNSProvider)
 
 	Dry = *dryFlag
 	toggleDryMode()

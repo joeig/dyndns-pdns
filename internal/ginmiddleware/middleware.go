@@ -1,4 +1,4 @@
-package main
+package ginmiddleware
 
 import (
 	"fmt"
@@ -18,7 +18,8 @@ func generateRequestID() (string, error) {
 	return uuid4.String(), nil
 }
 
-func requestIDMiddleware() gin.HandlerFunc {
+// RequestIDMiddleware adds a unique request ID to each HTTP response
+func RequestIDMiddleware() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		requestID, err := generateRequestID()
 		if err != nil {

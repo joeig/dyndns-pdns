@@ -24,7 +24,7 @@ func assertHostSyncComponent(t *testing.T, router *gin.Engine, method string, ur
 func TestHostSync(t *testing.T) {
 	configFile := "../../configs/config.test.yml"
 	yamlconfig.ParseConfig(&yamlconfig.C, &configFile)
-	setDNSProvider(&activeDNSProvider)
+	yamlconfig.SetDNSProvider(&yamlconfig.ActiveDNSProvider)
 	Dry = true
 	yamlconfig.C.PowerDNS.Dry = Dry
 	router := setupGinEngine()

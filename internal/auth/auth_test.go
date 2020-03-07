@@ -1,4 +1,4 @@
-package main
+package auth
 
 import (
 	"github.com/joeig/dyndns-pdns/internal/yamlconfig"
