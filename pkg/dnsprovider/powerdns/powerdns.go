@@ -11,7 +11,7 @@ type PowerDNS struct {
 
 	// VHost contains the PowerDNS virtual host.
 	//
-	// Exmaple: localhost
+	// Example: localhost
 	VHost string `mapstructure:"vhost"`
 
 	// APIKey contains the API key.

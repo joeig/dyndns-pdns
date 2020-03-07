@@ -7,6 +7,7 @@ import (
 	"net"
 )
 
+// RemoteAddress defines the input values for this ingest mode
 type RemoteAddress struct {
 	Address string
 }
@@ -20,6 +21,7 @@ func isolateHostAddress(remoteAddress string) string {
 	return address
 }
 
+// Process turns the input values into proper IPSet output values
 func (r *RemoteAddress) Process() (*ingest.IPSet, error) {
 	address := isolateHostAddress(r.Address)
 
