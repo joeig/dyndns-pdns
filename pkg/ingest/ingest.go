@@ -1,9 +1,9 @@
 package ingest
 
-// IngestModeType sets the IP address ingest mode
-type IngestModeType string
+// ModeType sets the IP address ingest mode
+type ModeType string
 
-// IngestMode defines the interface for IP address ingest mode processing
-type IngestMode interface {
+// Mode defines the interface for IP address ingest mode processing
+type Mode interface {
 	Process() (*IPSet, error)
 }

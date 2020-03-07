@@ -13,14 +13,14 @@ const (
 	//
 	// The IP addresses can be updated by providing the new values within the query string.
 	// Endpoint: /v1/host/<device name>/sync?key=<key>&ipv4=<IPv4 address>&ipv6=<IPv6 address>
-	IngestModeGetParameter ingest.IngestModeType = "getParameter"
+	IngestModeGetParameter ingest.ModeType = "getParameter"
 
 	// IngestModeRemoteAddress sets the ingest mode to "remote address".
 	//
 	// Instead of using values from the query string, this mode uses the remote address which was provided by the operating system's TCP/IP stack.
 	// This might cause issues if you're running dyndns-pdns behind a reverse proxy.
 	// Endpoint: /v1/host/<device name>/sync?key=<key>
-	IngestModeRemoteAddress ingest.IngestModeType = "remoteAddress"
+	IngestModeRemoteAddress ingest.ModeType = "remoteAddress"
 )
 
 // Config contains the primary configuration structure of the application.
@@ -28,12 +28,12 @@ type Config struct {
 	// Server contains the server configuration structure.
 	Server Server `mapstructure:"server"`
 
-	// DNSProviderType sets the particular DNS provider type.
+	// Type sets the particular DNS provider type.
 	//
 	// Example: powerDNS
-	DNSProviderType dnsprovider.DNSProviderType `mapstructure:"dnsProviderType"`
+	DNSProviderType dnsprovider.Type `mapstructure:"dnsProviderType"`
 
-	// PowerDNS sets the particular PowerDNS configuration, if the DNSProviderType was set to "powerDNS".
+	// PowerDNS sets the particular PowerDNS configuration, if the Type was set to "powerDNS".
 	PowerDNS powerdns.PowerDNS `mapstructure:"powerDNS"`
 
 	// KeyTable sets a list of host configurations.
@@ -82,10 +82,10 @@ type Key struct {
 	// Example: home-router
 	HostName string `mapstructure:"hostName"`
 
-	// IngestMode specifies the ingest mode.
+	// Mode specifies the ingest mode.
 	//
 	// Example: getParameter
-	IngestMode ingest.IngestModeType `mapstructure:"ingestMode"`
+	IngestMode ingest.ModeType `mapstructure:"ingestMode"`
 
 	// CleanUpMode specifies the clean up mode.
 	//

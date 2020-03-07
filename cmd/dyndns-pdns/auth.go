@@ -1,15 +1,17 @@
 package main
 
+import "github.com/joeig/dyndns-pdns/internal/genericerror"
+
 func checkHost(host string) (string, error) {
 	if host == "" {
-		return "", &Error{"Host parameter missing"}
+		return "", &genericerror.GenericError{Message: "Host parameter missing"}
 	}
 	return host, nil
 }
 
 func checkKey(key string) (string, error) {
 	if key == "" {
-		return "", &Error{"Key parameter missing"}
+		return "", &genericerror.GenericError{Message: "Key parameter missing"}
 	}
 	return key, nil
 }
@@ -20,5 +22,5 @@ func checkAuthorization(keyTable []Key, name string, key string) (*Key, error) {
 			return &keyItem, nil
 		}
 	}
-	return &Key{}, &Error{"Permission denied"}
+	return &Key{}, &genericerror.GenericError{Message: "Permission denied"}
 }

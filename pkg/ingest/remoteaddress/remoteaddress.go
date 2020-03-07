@@ -2,16 +2,13 @@ package remoteaddress
 
 import (
 	"github.com/asaskevich/govalidator"
-	"github.com/gin-gonic/gin"
-	"github.com/joeig/dyndns-pdns/internal/ginResponse"
+	"github.com/joeig/dyndns-pdns/internal/genericerror"
 	"github.com/joeig/dyndns-pdns/pkg/ingest"
-	"log"
 	"net"
-	"net/http"
 )
 
 type RemoteAddress struct {
-	Ctx *gin.Context
+	Address string
 }
 
 func isolateHostAddress(remoteAddress string) string {
@@ -24,8 +21,7 @@ func isolateHostAddress(remoteAddress string) string {
 }
 
 func (r *RemoteAddress) Process() (*ingest.IPSet, error) {
-	address := isolateHostAddress(r.Ctx.Request.RemoteAddr)
-	log.Printf("Received address=\"%s\"", address)
+	address := isolateHostAddress(r.Address)
 
 	ipSet := &ingest.IPSet{}
 
@@ -34,8 +30,7 @@ func (r *RemoteAddress) Process() (*ingest.IPSet, error) {
 	} else if govalidator.IsIPv6(address) {
 		ipSet.IPv6 = address
 	} else {
-		ginResponse.GinJSONError(r.Ctx, http.StatusBadRequest, "Invalid remote address")
-		return ipSet, &ingest.Error{}
+		return ipSet, &genericerror.GenericError{Message: "Invalid remote address"}
 	}
 
 	return ipSet, nil

@@ -1,7 +1,7 @@
 package dnsprovider
 
-// DNSProviderType sets the DNS provider type
-type DNSProviderType string
+// Type sets the DNS provider type
+type Type string
 
 // DNSProvider is an interface for basic DNS operations
 type DNSProvider interface {

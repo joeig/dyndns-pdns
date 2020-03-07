@@ -8,7 +8,7 @@ import (
 // DNSProviderPowerDNS sets the DNS provider to PowerDNS.
 //
 // This setting uses a PowerDNS backend.
-const DNSProviderPowerDNS dnsprovider.DNSProviderType = "powerDNS"
+const DNSProviderPowerDNS dnsprovider.Type = "powerDNS"
 
 var activeDNSProvider dnsprovider.DNSProvider
 
