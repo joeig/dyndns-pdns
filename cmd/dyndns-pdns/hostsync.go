@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/joeig/dyndns-pdns/internal/auth"
-	"github.com/joeig/dyndns-pdns/internal/genericerror"
 	"github.com/joeig/dyndns-pdns/internal/ginresponse"
 	"github.com/joeig/dyndns-pdns/internal/yamlconfig"
 	"github.com/joeig/dyndns-pdns/pkg/ingest"
@@ -68,7 +67,7 @@ func HostSync(ctx *gin.Context) {
 		return
 	}
 
-	_ = buildResponsePayload(ctx, keyItem, ipSet)
+	buildResponsePayload(ctx, keyItem, ipSet)
 }
 
 func getIngestModeHandler(ctx *gin.Context, desiredIngestModeType ingest.ModeType) (ingest.Mode, error) {
@@ -112,7 +111,7 @@ func getIPAddresses(ctx *gin.Context, keyItem *yamlconfig.Key) (*ingest.IPSet, e
 	return ipSet, nil
 }
 
-func buildResponsePayload(ctx *gin.Context, keyItem *yamlconfig.Key, ipSet *ingest.IPSet) error {
+func buildResponsePayload(ctx *gin.Context, keyItem *yamlconfig.Key, ipSet *ingest.IPSet) {
 	if keyItem.HostName != "" && keyItem.IngestMode != "" && (ipSet.HasIPv4() || ipSet.HasIPv6()) {
 		payload := HostSyncPayload{HostSyncObjects: []*HostSyncObject{{
 			HostName:    keyItem.HostName,
@@ -123,9 +122,8 @@ func buildResponsePayload(ctx *gin.Context, keyItem *yamlconfig.Key, ipSet *inge
 		}}}
 		log.Printf("Updated \"%s\" successfully", keyItem.Name)
 		ctx.JSON(http.StatusOK, payload)
-		return nil
+		return
 	}
 
 	ginresponse.GinJSONError(ctx, &ginresponse.HTTPError{Message: "HostSync request processing error", HTTPErrorCode: http.StatusInternalServerError})
-	return &genericerror.GenericError{}
 }
