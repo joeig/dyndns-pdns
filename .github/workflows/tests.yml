@@ -19,7 +19,7 @@ jobs:
           $(go env GOPATH)/bin/golangci-lint run
       - name: Staticcheck
         run: |
-          go get -u honnef.co/go/tools/cmd/staticcheck
+          GO111MODULE=off go get -u honnef.co/go/tools/cmd/staticcheck
           $(go env GOPATH)/bin/staticcheck ./...
   test:
     name: Test
