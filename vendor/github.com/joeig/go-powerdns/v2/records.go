@@ -64,10 +64,16 @@ const (
 	RRTypeA RRType = "A"
 	// RRTypeAAAA represents the AAAA resource record type
 	RRTypeAAAA RRType = "AAAA"
+	// RRTypeA6 represents the A6 resource record type
+	RRTypeA6 RRType = "A6"
 	// RRTypeAFSDB represents the AFSDB resource record type
 	RRTypeAFSDB RRType = "AFSDB"
 	// RRTypeALIAS represents the ALIAS resource record type
 	RRTypeALIAS RRType = "ALIAS"
+	// RRTypeDHCID represents the DHCID resource record type
+	RRTypeDHCID RRType = "DHCID"
+	// RRTypeDLV represents the DLV resource record type
+	RRTypeDLV RRType = "DLV"
 	// RRTypeCAA represents the CAA resource record type
 	RRTypeCAA RRType = "CAA"
 	// RRTypeCERT represents the CERT resource record type
@@ -84,12 +90,30 @@ const (
 	RRTypeDNAME RRType = "DNAME"
 	// RRTypeDS represents the DS resource record type
 	RRTypeDS RRType = "DS"
+	// RRTypeEUI48 represents the EUI48 resource record type
+	RRTypeEUI48 RRType = "EUI48"
+	// RRTypeEUI64 represents the EUI64 resource record type
+	RRTypeEUI64 RRType = "EUI64"
 	// RRTypeHINFO represents the HINFO resource record type
 	RRTypeHINFO RRType = "HINFO"
+	// RRTypeIPSECKEY represents the IPSECKEY resource record type
+	RRTypeIPSECKEY RRType = "IPSECKEY"
 	// RRTypeKEY represents the KEY resource record type
 	RRTypeKEY RRType = "KEY"
+	// RRTypeKX represents the KX resource record type
+	RRTypeKX RRType = "KX"
 	// RRTypeLOC represents the LOC resource record type
 	RRTypeLOC RRType = "LOC"
+	// RRTypeLUA represents the LUA resource record type
+	RRTypeLUA RRType = "LUA"
+	// RRTypeMAILA represents the MAILA resource record type
+	RRTypeMAILA RRType = "MAILA"
+	// RRTypeMAILB represents the MAILB resource record type
+	RRTypeMAILB RRType = "MAILB"
+	// RRTypeMINFO represents the MINFO resource record type
+	RRTypeMINFO RRType = "MINFO"
+	// RRTypeMR represents the MR resource record type
+	RRTypeMR RRType = "MR"
 	// RRTypeMX represents the MX resource record type
 	RRTypeMX RRType = "MX"
 	// RRTypeNAPTR represents the NAPTR resource record type
@@ -106,10 +130,14 @@ const (
 	RRTypeOPENPGPKEY RRType = "OPENPGPKEY"
 	// RRTypePTR represents the PTR resource record type
 	RRTypePTR RRType = "PTR"
+	// RRTypeRKEY represents the RKEY resource record type
+	RRTypeRKEY RRType = "RKEY"
 	// RRTypeRP represents the RP resource record type
 	RRTypeRP RRType = "RP"
 	// RRTypeRRSIG represents the RRSIG resource record type
 	RRTypeRRSIG RRType = "RRSIG"
+	// RRTypeSIG represents the SIG resource record type
+	RRTypeSIG RRType = "SIG"
 	// RRTypeSOA represents the SOA resource record type
 	RRTypeSOA RRType = "SOA"
 	// RRTypeSPF represents the SPF resource record type
@@ -130,6 +158,8 @@ const (
 	RRTypeTXT RRType = "TXT"
 	// RRTypeURI represents the URI resource record type
 	RRTypeURI RRType = "URI"
+	// RRTypeWKS represents the WKS resource record type
+	RRTypeWKS RRType = "WKS"
 )
 
 // Add creates a new resource record
@@ -151,7 +181,8 @@ func (r *RecordsService) Change(domain string, name string, recordType RRType, t
 		rrset.Records = append(rrset.Records, r)
 	}
 
-	return r.patchRRset(domain, *rrset)
+	payload := r.prepareRRSet(rrset)
+	return r.patchRRSet(domain, payload)
 }
 
 // Delete removes an existing resource record
@@ -161,7 +192,16 @@ func (r *RecordsService) Delete(domain string, name string, recordType RRType) e
 	rrset.Type = &recordType
 	rrset.ChangeType = ChangeTypePtr(ChangeTypeDelete)
 
-	return r.patchRRset(domain, *rrset)
+	payload := r.prepareRRSet(rrset)
+	return r.patchRRSet(domain, payload)
+}
+
+// Patch method makes patch of already prepared rrsets
+func (r *RecordsService) Patch(domain string, rrSets *RRsets) error {
+	for i := range rrSets.Sets {
+		fixRRSet(&rrSets.Sets[i])
+	}
+	return r.patchRRSet(domain, rrSets)
 }
 
 func canonicalResourceRecordValues(records []Record) {
@@ -170,22 +210,26 @@ func canonicalResourceRecordValues(records []Record) {
 	}
 }
 
-func fixRRset(rrset *RRset) {
+func fixRRSet(rrset *RRset) {
 	if *rrset.Type != RRTypeCNAME && *rrset.Type != RRTypeMX {
 		return
 	}
 	canonicalResourceRecordValues(rrset.Records)
 }
 
-func (r *RecordsService) patchRRset(domain string, rrset RRset) error {
-	rrset.Name = String(makeDomainCanonical(*rrset.Name))
+func (r *RecordsService) prepareRRSet(rrSet *RRset) *RRsets {
+	rrSet.Name = String(makeDomainCanonical(*rrSet.Name))
 
-	fixRRset(&rrset)
+	fixRRSet(rrSet)
 
 	payload := RRsets{}
-	payload.Sets = append(payload.Sets, rrset)
+	payload.Sets = append(payload.Sets, *rrSet)
+	return &payload
+}
 
-	req, err := r.client.newRequest("PATCH", fmt.Sprintf("servers/%s/zones/%s", r.client.VHost, trimDomain(domain)), nil, payload)
+func (r *RecordsService) patchRRSet(domain string, rrSets *RRsets) error {
+
+	req, err := r.client.newRequest("PATCH", fmt.Sprintf("servers/%s/zones/%s", r.client.VHost, trimDomain(domain)), nil, &rrSets)
 	if err != nil {
 		return err
 	}
