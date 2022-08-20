@@ -32,7 +32,7 @@ github.com/golang/protobuf/proto
 # github.com/google/jsonapi v0.0.0-20170708005851-46d3ced04344
 ## explicit
 github.com/google/jsonapi
-# github.com/google/uuid v1.0.0
+# github.com/google/uuid v1.3.0
 ## explicit
 github.com/google/uuid
 # github.com/hashicorp/hcl v1.0.0

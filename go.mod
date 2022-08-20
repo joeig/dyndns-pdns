@@ -7,7 +7,7 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20180315120708-ccb8e960c48f
 	github.com/gin-gonic/gin v1.7.0
 	github.com/google/jsonapi v0.0.0-20170708005851-46d3ced04344
-	github.com/google/uuid v1.0.0
+	github.com/google/uuid v1.3.0
 	github.com/joeig/go-powerdns/v2 v2.3.2
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/spf13/viper v1.2.0
