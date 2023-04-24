@@ -1,6 +1,6 @@
 module github.com/joeig/dyndns-pdns
 
-go 1.19
+go 1.20
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20180315120708-ccb8e960c48f
