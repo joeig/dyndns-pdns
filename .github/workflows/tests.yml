@@ -19,7 +19,7 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v4
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v4
         with:
           version: v1.55.2
       - name: Staticcheck
