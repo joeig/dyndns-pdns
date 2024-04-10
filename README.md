@@ -2,7 +2,6 @@
 
 Collects IPv4/IPv6 addresses of network devices (routers, firewalls etc.) and writes the corresponding PowerDNS resource records.
 
-[![Tests](https://github.com/joeig/dyndns-pdns/actions/workflows/tests.yml/badge.svg)](https://github.com/joeig/dyndns-pdns/actions/workflows/tests.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/joeig/dyndns-pdns)](https://goreportcard.com/report/github.com/joeig/dyndns-pdns)
 
 ## Setup
