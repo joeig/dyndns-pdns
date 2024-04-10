@@ -20,10 +20,10 @@ build-linux-amd64:
 	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME)_linux_amd64 -v ./cmd/dyndns-pdns
 
 test:
-	$(GOTEST) -v ./... -covermode=count -coverprofile=c.out
+	$(GOTEST) -v ./... -covermode=count -coverprofile=coverage.out
 
 coverage:
-	$(GOCOVER) -func=c.out
+	$(GOCOVER) -func=coverage.out
 
 check-fmt:
 	$(GOFMT) -d ${GOFILES}
