@@ -11,7 +11,7 @@ Collects IPv4/IPv6 addresses of network devices (routers, firewalls etc.) and wr
 You need `go` and `GOBIN` in your `PATH`. Once that is done, install dyndns-pdns using the following command:
 
 ~~~ bash
-go get -u github.com/joeig/dyndns-pdns/cmd/dyndns-pdns
+go install github.com/joeig/dyndns-pdns/cmd/dyndns-pdns@latest
 ~~~
 
 After that, copy [`config.dist.yml`](configs/config.dist.yml) to `config.yml`, replace the default settings and run the binary:
