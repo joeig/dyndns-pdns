@@ -21,8 +21,8 @@ func isolateHostAddress(remoteAddress string) string {
 	return address
 }
 
-// Process turns the input values into proper IPSet output values
-func (r *RemoteAddress) Process() (*ingest.IPSet, error) {
+// GetIPSet turns the input values into proper IPSet output values
+func (r *RemoteAddress) GetIPSet() (*ingest.IPSet, error) {
 	address := isolateHostAddress(r.Address)
 
 	ipSet := &ingest.IPSet{}
@@ -36,4 +36,8 @@ func (r *RemoteAddress) Process() (*ingest.IPSet, error) {
 	}
 
 	return ipSet, nil
+}
+
+func (r *RemoteAddress) GetPrefix() (string, error) {
+	return "", nil
 }

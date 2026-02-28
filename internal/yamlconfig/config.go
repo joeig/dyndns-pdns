@@ -96,6 +96,31 @@ type Key struct {
 	//
 	// Example: 5
 	TTL uint32 `mapstructure:"ttl"`
+
+	// DynamicKeys contains a list of hosts to update by replacing their IPv6 prefix with the one from this host's request.
+	DynamicKeys []DynamicKey `mapstructure:"dynamicKeys"`
+}
+
+// DynamicKey defines a host that should be updated by swapping its IPv6 prefix.
+type DynamicKey struct {
+	// Name is a human-friendly name of the particular host.
+	//
+	// Example: homePC
+	Name string `mapstructure:"name"`
+
+	// Enable toggles updates for the host off and on.
+	Enable bool `mapstructure:"enable"`
+
+	// HostName contains the host part of the maintained resource record.
+	//
+	// The device will be reachable via <HostName>.<Zone>.
+	// Example: home-pc
+	HostName string `mapstructure:"hostName"`
+
+	// InterfaceID is the IPv6 interface identifier to combine with the prefix.
+	//
+	// Example: ::1234:5678:abcd:1234
+	InterfaceID string `mapstructure:"interfaceID"`
 }
 
 // CleanUpModeType defines the clean up mode type.
