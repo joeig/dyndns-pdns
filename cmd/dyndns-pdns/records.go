@@ -8,11 +8,11 @@ import (
 	"net/http"
 )
 
-func cleanUpOutdatedResourceRecords(ipSet *ingest.IPSet, keyItem *yamlconfig.Key) error {
+func cleanUpOutdatedResourceRecords(ipSet *ingest.IPSet, keyItem *yamlconfig.Key, hostname string) error {
 	if keyItem.CleanUpMode == yamlconfig.CleanUpModeAny || (keyItem.CleanUpMode == yamlconfig.CleanUpModeRequestBased && ipSet.HasIPv4()) {
 		log.Print("Cleaning up any previously created IPv4 resource records")
 
-		if err := yamlconfig.ActiveDNSProvider.DeleteIPv4ResourceRecord(keyItem.HostName); err != nil {
+		if err := yamlconfig.ActiveDNSProvider.DeleteIPv4ResourceRecord(hostname); err != nil {
 			log.Printf("%+v", err)
 			return &ginresponse.HTTPError{Message: "IPv4 record deletion failed", HTTPErrorCode: http.StatusInternalServerError}
 		}
@@ -23,7 +23,7 @@ func cleanUpOutdatedResourceRecords(ipSet *ingest.IPSet, keyItem *yamlconfig.Key
 	if keyItem.CleanUpMode == yamlconfig.CleanUpModeAny || (keyItem.CleanUpMode == yamlconfig.CleanUpModeRequestBased && ipSet.HasIPv6()) {
 		log.Print("Cleaning up any previously created IPv6 resource records")
 
-		if err := yamlconfig.ActiveDNSProvider.DeleteIPv6ResourceRecord(keyItem.HostName); err != nil {
+		if err := yamlconfig.ActiveDNSProvider.DeleteIPv6ResourceRecord(hostname); err != nil {
 			log.Printf("%+v", err)
 			return &ginresponse.HTTPError{Message: "IPv6 record deletion failed", HTTPErrorCode: http.StatusInternalServerError}
 		}
@@ -34,10 +34,10 @@ func cleanUpOutdatedResourceRecords(ipSet *ingest.IPSet, keyItem *yamlconfig.Key
 	return nil
 }
 
-func createNewIPv4ResourceRecord(ipSet *ingest.IPSet, keyItem *yamlconfig.Key) error {
+func createNewIPv4ResourceRecord(ipSet *ingest.IPSet, keyItem *yamlconfig.Key, hostname string) error {
 	log.Print("Creating IPv4 resource records")
 
-	if err := yamlconfig.ActiveDNSProvider.AddIPv4ResourceRecord(keyItem.HostName, ipSet.IPv4, keyItem.TTL); err != nil {
+	if err := yamlconfig.ActiveDNSProvider.AddIPv4ResourceRecord(hostname, ipSet.IPv4, keyItem.TTL); err != nil {
 		log.Printf("%+v", err)
 		return &ginresponse.HTTPError{Message: "IPv4 record creation failed", HTTPErrorCode: http.StatusInternalServerError}
 	}
@@ -45,10 +45,10 @@ func createNewIPv4ResourceRecord(ipSet *ingest.IPSet, keyItem *yamlconfig.Key) e
 	return nil
 }
 
-func createNewIPv6ResourceRecord(ipSet *ingest.IPSet, keyItem *yamlconfig.Key) error {
+func createNewIPv6ResourceRecord(ipSet *ingest.IPSet, keyItem *yamlconfig.Key, hostname string) error {
 	log.Print("Creating IPv6 resource records")
 
-	if err := yamlconfig.ActiveDNSProvider.AddIPv6ResourceRecord(keyItem.HostName, ipSet.IPv6, keyItem.TTL); err != nil {
+	if err := yamlconfig.ActiveDNSProvider.AddIPv6ResourceRecord(hostname, ipSet.IPv6, keyItem.TTL); err != nil {
 		log.Printf("%+v", err)
 		return &ginresponse.HTTPError{Message: "IPv6 record creation failed", HTTPErrorCode: http.StatusInternalServerError}
 	}
@@ -56,18 +56,34 @@ func createNewIPv6ResourceRecord(ipSet *ingest.IPSet, keyItem *yamlconfig.Key) e
 	return nil
 }
 
-func createNewResourceRecords(ipSet *ingest.IPSet, keyItem *yamlconfig.Key) error {
+func createNewResourceRecords(ipSet *ingest.IPSet, keyItem *yamlconfig.Key) (*HostSyncObject, error) {
 	if ipSet.HasIPv4() {
-		if err := createNewIPv4ResourceRecord(ipSet, keyItem); err != nil {
-			return err
+		if err := createNewIPv4ResourceRecord(ipSet, keyItem, keyItem.HostName); err != nil {
+			return nil, err
 		}
 	}
 
 	if ipSet.HasIPv6() {
-		if err := createNewIPv6ResourceRecord(ipSet, keyItem); err != nil {
-			return err
+		if err := createNewIPv6ResourceRecord(ipSet, keyItem, keyItem.HostName); err != nil {
+			return nil, err
 		}
 	}
 
-	return nil
+	if ipSet.HasIPv4() || ipSet.HasIPv6() {
+		hostSyncObject := &HostSyncObject{
+			HostName:    keyItem.HostName,
+			IngestMode:  keyItem.IngestMode,
+			CleanUpMode: keyItem.CleanUpMode,
+			TTL:         int(keyItem.TTL),
+			IPv4:        ipSet.IPv4,
+			IPv6:        ipSet.IPv6,
+		}
+		return hostSyncObject, nil
+	}
+
+	if len(keyItem.DynamicKeys) > 0 {
+		return nil, nil
+	}
+
+	return nil, &ginresponse.HTTPError{Message: "No IP addresses to create resource records for", HTTPErrorCode: http.StatusBadRequest}
 }
